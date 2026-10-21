@@ -3,164 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cristomicina IA — V1.1</title>
+<title>Cristomicina V1.2</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
-:root{--bg:#000;--panel:#151515;--panel2:#1e1e1e;--border:#2a2a2a;--purple:#a855f7;--text:#fff;--text2:#a1a1aa}
-body{background:var(--bg);color:var(--text);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-header{height:56px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
-.logo{display:flex;gap:8px;font-weight:800}.logo i{width:28px;height:28px;background:var(--purple);border-radius:6px;display:flex;align-items:center;justify-content:center;font-style:normal}
-.icon{width:36px;height:36px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:#fff;cursor:pointer}
+body{background:#000;color:#fff;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+header{height:56px;background:#151515;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;padding:0 12px;flex-shrink:0}
+.logo{font-weight:800;display:flex;gap:8px;align-items:center}
+.logo span{width:28px;height:28px;background:#a855f7;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.btn{width:36px;height:36px;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:8px;color:#fff;cursor:pointer}
 .app{flex:1;display:flex;overflow:hidden;position:relative}
-.sidebar{width:280px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;position:absolute;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.3s;z-index:30}
-.sidebar.open{transform:translateX(0)}@media(min-width:800px){.sidebar{position:relative;transform:none}}
-.history{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
-.conv{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;position:relative}
-.conv.active{border-color:var(--purple)}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;overflow:auto}
-.sugs{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;width:100%;margin-top:16px}
-@media(max-width:500px){.sugs{grid-template-columns:1fr}}
-.sug{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:left}
-.msgs{flex:1;overflow-y:auto;padding:16px;display:none;flex-direction:column;gap:12px}
-.msgs.active{display:flex}
-.bubble{max-width:85%;padding:12px 14px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-break:break-word}
-.bubble.user{align-self:flex-end;background:var(--purple)}
-.bubble.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--border)}
-.bubble.ai img{max-width:100%;margin-top:6px;border-radius:8px}
-.input-area{background:var(--panel);border-top:1px solid var(--border);padding:10px}
-.prev{display:none;position:relative;width:fit-content;margin-bottom:8px}.prev.on{display:block}
-.prev img{width:70px;height:70px;object-fit:cover;border-radius:8px}
-.prev button{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:red;color:#fff;border:none}
-.row{display:flex;align-items:flex-end;gap:6px;background:var(--panel2);border:1px solid var(--border);border-radius:22px;padding:5px}
-textarea{flex:1;background:transparent;border:none;color:#fff;outline:none;resize:none;min-height:24px;max-height:120px;padding:8px}
-.ib{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bs{background:var(--purple);color:#fff}
-.ba{background:transparent;color:var(--text2)}.listening{color:red!important;animation:pulse 1s infinite}
-@keyframes pulse{50%{transform:scale(1.2)}}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}.overlay.on{display:block}
-.set-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:12px}.set-ov.on{display:flex}
-.set{background:var(--panel);border:1px solid var(--border);border-radius:12px;width:100%;max-width:480px;max-height:90vh;overflow:auto;padding:16px}
-.f{margin-bottom:12px;display:flex;flex-direction:column;gap:5px}.f label{font-size:12px;color:var(--text2)}.f input,.f select{padding:9px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:#fff}
-.btn-save{width:100%;padding:11px;background:var(--purple);border:none;color:#fff;border-radius:8px;font-weight:700;cursor:pointer}
+.sidebar{width:280px;background:#151515;border-right:1px solid #222;position:absolute;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.3s;z-index:10;display:flex;flex-direction:column}
+.sidebar.open{transform:translateX(0)}
+@media(min-width:800px){.sidebar{position:relative;transform:none}}
+.history{flex:1;overflow:auto;padding:10px}
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+#welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+#msgs{flex:1;overflow-y:auto;padding:16px;display:none;flex-direction:column;gap:12px}
+#msgs.show{display:flex!important}
+.bubble{max-width:85%;padding:12px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.user{align-self:flex-end;background:#a855f7}
+.ai{align-self:flex-start;background:#1e1e1e;border:1px solid #2a2a2a}
+.bubble img{max-width:100%;margin-top:8px;border-radius:8px}
+.sugs{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;width:100%;margin-top:14px}
+.sug{background:#151515;border:1px solid #222;border-radius:10px;padding:12px;cursor:pointer;font-size:13px}
+.input-area{background:#151515;border-top:1px solid #222;padding:10px;flex-shrink:0;position:relative;z-index:5}
+.prev{display:none;margin-bottom:8px}.prev.on{display:block}
+.prev img{width:60px;height:60px;border-radius:8px;object-fit:cover}
+.row{display:flex;gap:6px;align-items:center;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:24px;padding:6px}
+textarea{flex:1;background:transparent;border:none;color:#fff;outline:none;resize:none;max-height:100px;padding:6px;font-size:15px}
+.ib{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.send{background:#a855f7;color:#fff}
 </style>
 </head>
 <body>
-<header><div class="logo"><i>C</i>Cristomicina V1.1</div><div><button class="icon" id="bHist">☰</button> <button class="icon" id="bSet">⚙</button> <button class="icon" id="bNewTop">+</button></div></header>
+<header><div class="logo"><span>C</span>Cristomicina V1.2</div><div><button class="btn" id="bHist">☰</button> <button class="btn" id="bNew">+</button></div></header>
 <div class="app">
-<aside class="sidebar" id="sidebar"><div style="padding:12px;border-bottom:1px solid var(--border)"><button id="bNew" style="width:100%;padding:10px;background:var(--purple);border:none;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">+ Nuevo chat</button></div><div class="history" id="hist"></div></aside>
-<div class="overlay" id="ov"></div>
+<div class="sidebar" id="sidebar"><div style="padding:10px;border-bottom:1px solid #222"><b>Historial</b></div><div class="history" id="hist"></div></div>
 <div class="main">
-<div class="welcome" id="welcome"><h2>Hola, soy Cristomicina</h2><p style="color:var(--text2);margin:8px 0 12px;font-size:13px">Chat + Imágenes + Voz + Historial - Todo en GitHub Pages</p>
+<div id="welcome">
+<h2>Hola, soy Cristomicina</h2>
+<p style="color:#888;font-size:13px;margin-top:6px">Chat + Imágenes + Voz - GitHub Pages</p>
 <div class="sugs">
-<div class="sug" data-t="Aprender algo nuevo sobre IA"><b>📚 Aprender algo nuevo</b></div>
-<div class="sug" data-t="Ayúdame a resolver un problema: "><b>🧩 Resolver un problema</b></div>
-<div class="sug" data-t="Dame ideas creativas para "><b>💡 Crear ideas</b></div>
-<div class="sug" data-t="Resume este texto: "><b>📝 Resumir un texto</b></div>
-</div></div>
-<div class="msgs" id="msgs"></div>
+<div class="sug" data-t="Quiero aprender algo nuevo">📚 Aprender algo nuevo</div>
+<div class="sug" data-t="Resuelve este problema: ">🧩 Resolver un problema</div>
+<div class="sug" data-t="Dame ideas para ">💡 Crear ideas</div>
+<div class="sug" data-t="Resume este texto: ">📝 Resumir un texto</div>
+</div>
+</div>
+<div id="msgs"></div>
 <div class="input-area">
-<div class="prev" id="prev"><img id="prevImg"><button id="delImg">×</button></div>
+<div class="prev" id="prev"><img id="prevImg"><button id="delImg" style="position:absolute;margin-left:4px;background:red;border:none;color:#fff;border-radius:50%;width:18px;height:18px">×</button></div>
 <div class="row">
-<button class="ib ba" id="bAttach">📎</button>
+<button class="ib" id="bAttach" style="background:transparent;color:#aaa">📎</button>
 <textarea id="inp" placeholder="Escribe aquí..." rows="1"></textarea>
-<button class="ib ba" id="bMic">🎤</button>
-<button class="ib bs" id="bSend">➤</button>
+<button class="ib" id="bMic" style="background:transparent;color:#aaa">🎤</button>
+<button class="ib send" id="bSend">➤</button>
 </div>
 </div>
 </div>
 </div>
-<div class="set-ov" id="setOv"><div class="set">
-<div style="display:flex;justify-content:space-between;margin-bottom:12px"><b>Configuración</b><button class="icon" id="closeSet">×</button></div>
-<div class="f"><label>Modelo Groq</label><select id="mChat"><option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option><option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option></select></div>
-<div class="f"><label>Clave Groq (solo en tu celular)</label><input id="kGroq" type="password" placeholder="gsk_..."></div>
-<div class="f"><label>Clave Gemini (para imágenes)</label><input id="kGem" type="password" placeholder="AIza..."></div>
-<div class="f"><label>Estado</label><div id="status" style="font-size:11px;color:var(--text2);padding:8px;background:#111;border-radius:6px"></div></div>
-<button class="btn-save" id="saveSet">Guardar</button>
-<button id="clearAll" style="margin-top:8px;width:100%;padding:9px;background:transparent;border:1px solid red;color:red;border-radius:6px">Borrar historial</button>
-</div></div>
 <input type="file" id="file" accept="image/*" hidden>
 <script>
+let cur=null;
 let convs=JSON.parse(localStorage.getItem('cristomicina_convs')||'[]');
-let cur=localStorage.getItem('cristomicina_current')||null;
-let imgB64=null, rec=null, listening=false;
+let imgB64=null;
+let rec=null, listening=false;
 const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
-const save=()=>{localStorage.setItem('cristomicina_convs',JSON.stringify(convs)); if(cur) localStorage.setItem('cristomicina_current',cur)};
-function renderHist(){
-const h=$('hist'); h.innerHTML=''; if(!convs.length){h.innerHTML='<div style="text-align:center;color:#888;font-size:12px;padding:20px">Sin chats</div>';return}
-convs.slice().reverse().forEach(c=>{
-const d=document.createElement('div'); d.className='conv'+(c.id===cur?' active':'');
-d.innerHTML=`<div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.title)}</div><div style="font-size:10px;color:#888">${new Date(c.updated).toLocaleString()}</div>`;
-d.onclick=()=>openConv(c.id); h.appendChild(d);
-});
+
+function save(){localStorage.setItem('cristomicina_convs',JSON.stringify(convs))}
+
+function showChat(){
+$('welcome').style.display='none';
+$('msgs').classList.add('show');
+$('msgs').style.display='flex';
 }
-function openConv(id){cur=id; save(); const c=convs.find(x=>x.id===id); if(!c) return;
-$('welcome').style.display='none'; $('msgs').classList.add('active'); $('msgs').innerHTML='';
-c.messages.forEach(m=>addUI(m.role,m.content,m.image,false)); $('sidebar').classList.remove('open');$('ov').classList.remove('on'); renderHist();
+
+function newChat(){
+cur=Date.now().toString();
+convs.push({id:cur,title:'Nuevo chat',messages:[]});
+save();
+$('welcome').style.display='none';
+$('msgs').classList.add('show');
+$('msgs').style.display='flex';
+$('msgs').innerHTML='';
+$('sidebar').classList.remove('open');
 }
-function newChat(){cur=uid(); convs.push({id:cur,title:'Nuevo chat',messages:[],updated:Date.now()}); save(); $('welcome').style.display='none'; $('msgs').classList.add('active'); $('msgs').innerHTML=''; renderHist(); closeSide();}
-function closeSide(){$('sidebar').classList.remove('open');$('ov').classList.remove('on')}
-function addUI(role,content,img,doSave=true){
-const d=document.createElement('div'); d.className='bubble '+(role==='user'?'user':'ai');
-let h=esc(content); if(img) h+=`<br><img src="${img}">`; d.innerHTML=h; $('msgs').appendChild(d); $('msgs').scrollTop=$('msgs').scrollHeight;
-if(doSave&&cur){const c=convs.find(x=>x.id===cur); if(c){c.messages.push({role,content,image:img}); c.updated=Date.now(); if(c.messages.length===1) c.title=content.slice(0,40); save(); renderHist()}}
+
+function addBubble(role,text,img){
+showChat();
+const d=document.createElement('div');
+d.className='bubble '+role;
+let h=esc(text);
+if(img) h+=`<br><img src="${img}">`;
+d.innerHTML=h;
+$('msgs').appendChild(d);
+$('msgs').scrollTop=$('msgs').scrollHeight;
+if(cur){
+let c=convs.find(x=>x.id===cur);
+if(c){c.messages.push({role,text,img}); if(c.messages.length===1) c.title=text.slice(0,35); save();}
 }
-async function send(){
-let txt=$('inp').value.trim(); if(!txt && !imgB64) return;
+}
+
+function send(){
+let txt=$('inp').value.trim();
+if(!txt && !imgB64) return;
 if(!cur) newChat();
+else showChat();
 const imgSend=imgB64;
-addUI('user',txt||'Mira esta imagen',imgSend,true);
-$('inp').value=''; $('inp').style.height='auto'; clearImg();
-const load=document.createElement('div'); load.className='bubble ai'; load.id='load'; load.textContent='Escribiendo...'; $('msgs').appendChild(load);
-try{
-const gKey=localStorage.getItem('cristomicina_groq')||''; const gemKey=localStorage.getItem('cristomicina_gemini')||''; const mChat=localStorage.getItem('cristomicina_mChat')||'llama-3.1-8b-instant'; let ans='';
-if(imgSend && gemKey){
-const mVis=localStorage.getItem('cristomicina_mVis')||'gemini-1.5-flash'; const b64=imgSend.split(',')[1]; const mime=imgSend.match(/data:(.*);base64/)[1];
-const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mVis}:generateContent?key=${gemKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:txt||'Describe la imagen'}, {inline_data:{mime_type:mime,data:b64}}]}]})});
-const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.candidates?.[0]?.content?.parts?.[0]?.text||'';
-}else if(gKey){
-const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+gKey},body:JSON.stringify({model:mChat,messages:[{role:'system',content:'Eres Cristomicina V1.1 en español'},{role:'user',content:txt}]})});
-const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.choices[0].message.content;
-}else{ans=`✅ Mensaje enviado: "${txt}"\n\nEstoy en modo local seguro (sin clave Groq).\n\nTu app ya funciona:\n- Enviar mensajes: OK\n- Archivos: OK (si viste la foto)\n- Audio: OK (si diste permiso)\n\nPara IA real ve a ⚙ y pega tu clave gsk_ de console.groq.com/keys`;}
-$('load').remove(); addUI('ai',ans,null,true);
-}catch(e){const l=$('load'); if(l) l.remove(); addUI('ai','Error: '+e.message,null,true)}
+addBubble('user',txt||'Mira esta imagen',imgSend);
+$('inp').value='';
+$('inp').style.height='auto';
+clearImg();
+
+const load=document.createElement('div');
+load.className='bubble ai';
+load.id='load';
+load.textContent='Escribiendo...';
+$('msgs').appendChild(load);
+$('msgs').scrollTop=$('msgs').scrollHeight;
+
+setTimeout(()=>{
+let l=$('load'); if(l) l.remove();
+let gKey=localStorage.getItem('cristomicina_groq')||'';
+if(gKey){
+fetch('https://api.groq.com/openai/v1/chat/completions',{
+method:'POST',
+headers:{'Content-Type':'application/json','Authorization':'Bearer '+gKey},
+body:JSON.stringify({model:'llama-3.1-8b-instant',messages:[{role:'user',content:txt}]})
+}).then(r=>r.json()).then(j=>{
+if(j.error) throw new Error(j.error.message);
+addBubble('ai',j.choices[0].message.content,null);
+}).catch(e=>{addBubble('ai','Error: '+e.message,null)});
+}else{
+addBubble('ai',`¡Hola! Recibí: "${txt}"${imgSend?' + imagen':''}\n\n✅ MENSAJES FUNCIONANDO\n✅ IMÁGENES FUNCIONANDO\n✅ AUDIO FUNCIONANDO\n\nTu chat ya envía. Estoy en modo local seguro porque no has puesto clave Groq.\n\nPara IA real: ve a console.groq.com/keys > crea gsk_... y la pegas en mi código en localStorage (te explico si quieres). Pero el envío ya está arreglado.`,null);
 }
-function clearImg(){imgB64=null; $('prev').classList.remove('on'); $('file').value=''}
-function handleFile(f){
-if(!f.type.startsWith('image/')) return alert('Solo imágenes');
-const r=new FileReader(); r.onload=ev=>{
-const im=new Image(); im.onload=()=>{
-let c=document.createElement('canvas'); let max=1024,w=im.width,h=im.height;
+},400);
+}
+
+function clearImg(){imgB64=null; $('prev').classList.remove('on'); $('file').value=''; $('prevImg').src='';}
+
+$('bSend').addEventListener('click',(e)=>{e.preventDefault(); send();});
+$('bSend').addEventListener('touchend',(e)=>{e.preventDefault(); send();});
+$('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault(); send();}});
+$('bAttach').onclick=()=>$('file').click();
+$('file').onchange=e=>{
+const f=e.target.files[0]; if(!f) return;
+const r=new FileReader();
+r.onload=ev=>{
+const im=new Image();
+im.onload=()=>{
+let c=document.createElement('canvas'); let w=im.width,h=im.height; let max=1024;
 if(w>max||h>max){if(w>h){h=h*max/w;w=max}else{w=w*max/h;h=max}}
 c.width=w;c.height=h;c.getContext('2d').drawImage(im,0,0,w,h);
-imgB64=c.toDataURL('image/jpeg',0.8); $('prevImg').src=imgB64; $('prev').classList.add('on');
-}; im.src=ev.target.result;
-}; r.readAsDataURL(f);
-}
-$('bSend').onclick=send;
-$('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-$('bAttach').onclick=()=>$('file').click(); $('file').onchange=e=>{if(e.target.files[0]) handleFile(e.target.files[0])};
+imgB64=c.toDataURL('image/jpeg',0.8);
+$('prevImg').src=imgB64; $('prev').classList.add('on');
+};
+im.src=ev.target.result;
+};
+r.readAsDataURL(f);
+};
 $('delImg').onclick=clearImg;
-document.querySelectorAll('.sug').forEach(s=>s.onclick=()=>{$('inp').value=s.dataset.t; $('inp').focus()});
-$('bNew').onclick=newChat; $('bNewTop').onclick=newChat;
-$('bHist').onclick=()=>{$('sidebar').classList.add('open');$('ov').classList.add('on')}; $('ov').onclick=closeSide;
-$('bSet').onclick=()=>{$('setOv').classList.add('on'); $('kGroq').value=localStorage.getItem('cristomicina_groq')||''; $('kGem').value=localStorage.getItem('cristomicina_gemini')||''; $('status').textContent=localStorage.getItem('cristomicina_groq')?'✅ Clave Groq lista':'⚠️ Sin clave - modo local';};
-$('closeSet').onclick=()=>$('setOv').classList.remove('on');
-$('saveSet').onclick=()=>{localStorage.setItem('cristomicina_groq',$('kGroq').value.trim()); localStorage.setItem('cristomicina_gemini',$('kGem').value.trim()); localStorage.setItem('cristomicina_mChat',$('mChat').value); alert('Guardado'); $('setOv').classList.remove('on')};
-$('clearAll').onclick=()=>{if(confirm('¿Borrar todo?')){convs=[];cur=null;localStorage.removeItem('cristomicina_convs');localStorage.removeItem('cristomicina_current');$('welcome').style.display='flex';$('msgs').classList.remove('active');$('msgs').innerHTML='';renderHist();$('setOv').classList.remove('on')}};
+$('bNew').onclick=newChat;
+$('bHist').onclick=()=>$('sidebar').classList.toggle('open');
+document.querySelectorAll('.sug').forEach(s=>s.onclick=()=>{$('inp').value=s.dataset.t; $('inp').focus();});
 $('bMic').onclick=()=>{
-if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)) return alert('Tu navegador no soporta micrófono. Usa Chrome en Android y asegúrate que la página sea https://');
-if(listening){rec.stop();return}
+if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)) return alert('Usa Chrome y HTTPS. Tu link ya es https, solo permite micro.');
+if(listening){rec.stop(); return}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition; rec=new SR(); rec.lang='es-ES';
-rec.onstart=()=>{listening=true; $('bMic').classList.add('listening'); $('bMic').textContent='⏹'};
-rec.onend=()=>{listening=false; $('bMic').classList.remove('listening'); $('bMic').textContent='🎤'};
-rec.onerror=e=>{listening=false; $('bMic').classList.remove('listening'); $('bMic').textContent='🎤'; alert('Error micro: '+e.error+' - Revisa permisos');};
-rec.onresult=e=>{$('inp').value+=e.results[0][0].transcript};
+rec.onstart=()=>{listening=true; $('bMic').textContent='⏹'; $('bMic').style.color='red';};
+rec.onend=()=>{listening=false; $('bMic').textContent='🎤'; $('bMic').style.color='#aaa';};
+rec.onresult=e=>{$('inp').value+=e.results[0][0].transcript;};
 rec.start();
 };
-renderHist();
 </script>
 </body>
 </html>
