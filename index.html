@@ -2,184 +2,134 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Cristomicina IA — V1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cristomicina IA — V1.1</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Inter,sans-serif}
-:root{--bg:#000;--panel:#151515;--panel2:#1e1e1e;--border:#2a2a2a;--purple:#a855f7;--purple2:#9333ea;--text:#fff;--text2:#a1a1aa}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,sans-serif}
+:root{--bg:#000;--panel:#151515;--panel2:#1e1e1e;--border:#2a2a2a;--purple:#a855f7;--text:#fff;--text2:#a1a1aa}
 body{background:var(--bg);color:var(--text);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden}
-header{height:56px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 14px;flex-shrink:0}
-.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;letter-spacing:.2px}
-.logo i{width:32px;height:32px;background:linear-gradient(135deg,var(--purple),var(--purple2));border-radius:8px;display:flex;align-items:center;justify-content:center;font-style:normal}
-.hdr{display:flex;gap:8px}
-.icon{width:36px;height:36px;background:var(--panel2);border:1px solid var(--border);border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer}
+header{height:56px;background:var(--panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.logo{display:flex;gap:8px;font-weight:800}.logo i{width:28px;height:28px;background:var(--purple);border-radius:6px;display:flex;align-items:center;justify-content:center;font-style:normal}
+.icon{width:36px;height:36px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:#fff;cursor:pointer}
 .app{flex:1;display:flex;overflow:hidden;position:relative}
-.sidebar{width:300px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:.28s;z-index:30}
-@media(max-width:800px){.sidebar{position:absolute;left:0;top:0;bottom:0;transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}}
-.side-head{padding:14px;border-bottom:1px solid var(--border)}
-.btn-new{width:100%;background:var(--purple);color:#fff;border:none;padding:12px;border-radius:12px;font-weight:700;cursor:pointer}
-.history{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
-.conv{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:11px 12px;cursor:pointer;position:relative}
-.conv.active{border-color:var(--purple);background:#211a30}
-.conv-title{font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:22px}
-.conv-date{font-size:11px;color:var(--text2);margin-top:3px}
-.del{position:absolute;right:6px;top:8px;width:22px;height:22px;border:none;background:transparent;color:var(--text2);cursor:pointer}
+.sidebar{width:280px;background:var(--panel);border-right:1px solid var(--border);display:flex;flex-direction:column;position:absolute;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.3s;z-index:30}
+.sidebar.open{transform:translateX(0)}@media(min-width:800px){.sidebar{position:relative;transform:none}}
+.history{flex:1;overflow:auto;padding:10px;display:flex;flex-direction:column;gap:8px}
+.conv{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px;cursor:pointer;position:relative}
+.conv.active{border-color:var(--purple)}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;overflow:auto}
-.welcome h1{font-size:30px;margin-bottom:10px}
-.welcome p{color:var(--text2);max-width:520px;line-height:1.5;margin-bottom:22px;font-size:14px}
-.sugs{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:520px;width:100%}
-@media(max-width:520px){.sugs{grid-template-columns:1fr}}
-.sug{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:left;cursor:pointer}
-.sug:hover{border-color:var(--purple)}
-.sug b{font-size:13px;display:block;margin-bottom:2px}
-.sug span{font-size:11px;color:var(--text2)}
-.msgs{flex:1;overflow-y:auto;padding:18px;display:none;flex-direction:column;gap:14px}
+.welcome{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center;overflow:auto}
+.sugs{display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:500px;width:100%;margin-top:16px}
+@media(max-width:500px){.sugs{grid-template-columns:1fr}}
+.sug{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:12px;cursor:pointer;text-align:left}
+.msgs{flex:1;overflow-y:auto;padding:16px;display:none;flex-direction:column;gap:12px}
 .msgs.active{display:flex}
-.bubble{max-width:86%;padding:13px 14px;border-radius:16px;font-size:14px;line-height:1.5;white-space:pre-wrap;word-break:break-word}
-.bubble.user{align-self:flex-end;background:var(--purple);border-bottom-right-radius:4px}
-.bubble.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--border);border-bottom-left-radius:4px}
-.bubble.ai img{max-width:100%;margin-top:8px;border-radius:8px}
-.load{display:flex;gap:4px}
-.dot{width:6px;height:6px;background:var(--purple);border-radius:50%;animation:b 1.3s infinite}
-.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
-@keyframes b{0%,80%,100%{transform:scale(0)}40%{transform:scale(1)}}
-.input-area{background:var(--panel);border-top:1px solid var(--border);padding:10px 12px;padding-bottom:max(10px,env(safe-area-inset-bottom))}
-.prev{display:none;margin-bottom:8px;position:relative;width:fit-content}
-.prev.on{display:block}
-.prev img{width:78px;height:78px;object-fit:cover;border-radius:10px;border:1px solid var(--border)}
-.prev button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;border:none;background:#ef4444;color:#fff;cursor:pointer}
-.row{display:flex;align-items:flex-end;gap:6px;background:var(--panel2);border:1px solid var(--border);border-radius:24px;padding:5px 6px}
-.row:focus-within{border-color:var(--purple)}
-textarea{flex:1;background:transparent;border:none;color:#fff;outline:none;resize:none;min-height:24px;max-height:120px;font-size:15px;padding:8px 6px}
-.ib{width:36px;height:36px;border-radius:50%;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-.ba{background:transparent;color:var(--text2)}.bm.ba.listening{color:#ef4444;animation:p 1s infinite}
-@keyframes p{50%{transform:scale(1.15)}}
-.bs{background:var(--purple);color:#fff}.bs:disabled{opacity:.35}
+.bubble{max-width:85%;padding:12px 14px;border-radius:14px;font-size:14px;white-space:pre-wrap;word-break:break-word}
+.bubble.user{align-self:flex-end;background:var(--purple)}
+.bubble.ai{align-self:flex-start;background:var(--panel);border:1px solid var(--border)}
+.bubble.ai img{max-width:100%;margin-top:6px;border-radius:8px}
+.input-area{background:var(--panel);border-top:1px solid var(--border);padding:10px}
+.prev{display:none;position:relative;width:fit-content;margin-bottom:8px}.prev.on{display:block}
+.prev img{width:70px;height:70px;object-fit:cover;border-radius:8px}
+.prev button{position:absolute;top:-5px;right:-5px;width:20px;height:20px;border-radius:50%;background:red;color:#fff;border:none}
+.row{display:flex;align-items:flex-end;gap:6px;background:var(--panel2);border:1px solid var(--border);border-radius:22px;padding:5px}
+textarea{flex:1;background:transparent;border:none;color:#fff;outline:none;resize:none;min-height:24px;max-height:120px;padding:8px}
+.ib{width:36px;height:36px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bs{background:var(--purple);color:#fff}
+.ba{background:transparent;color:var(--text2)}.listening{color:red!important;animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.2)}}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:20}.overlay.on{display:block}
-.set-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:14px}.set-ov.on{display:flex}
-.set{background:var(--panel);border:1px solid var(--border);border-radius:16px;width:100%;max-width:500px;max-height:90vh;overflow:auto}
-.set-h{padding:18px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.set-b{padding:18px;display:flex;flex-direction:column;gap:14px}
-.f{display:flex;flex-direction:column;gap:6px}
-.f label{font-size:12px;color:var(--text2)}
-.f input,.f select{padding:10px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:8px;color:#fff;outline:none}
-.hint{font-size:11px;color:var(--text2);line-height:1.4}
-.btn-save{padding:12px;background:var(--purple);border:none;color:#fff;border-radius:10px;font-weight:700;cursor:pointer}
-.btn-del{padding:10px;background:transparent;border:1px solid #ef4444;color:#ef4444;border-radius:8px;cursor:pointer}
+.set-ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:12px}.set-ov.on{display:flex}
+.set{background:var(--panel);border:1px solid var(--border);border-radius:12px;width:100%;max-width:480px;max-height:90vh;overflow:auto;padding:16px}
+.f{margin-bottom:12px;display:flex;flex-direction:column;gap:5px}.f label{font-size:12px;color:var(--text2)}.f input,.f select{padding:9px;background:var(--panel2);border:1px solid var(--border);border-radius:6px;color:#fff}
+.btn-save{width:100%;padding:11px;background:var(--purple);border:none;color:#fff;border-radius:8px;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
-<header><div class="logo"><i>C</i>Cristomicina IA — V1</div><div class="hdr"><button class="icon" id="bHist">☰</button><button class="icon" id="bSet">⚙</button><button class="icon" id="bNewTop">+</button></div></header>
+<header><div class="logo"><i>C</i>Cristomicina V1.1</div><div><button class="icon" id="bHist">☰</button> <button class="icon" id="bSet">⚙</button> <button class="icon" id="bNewTop">+</button></div></header>
 <div class="app">
-<aside class="sidebar" id="sidebar"><div class="side-head"><button class="btn-new" id="bNew">+ Nuevo chat</button></div><div class="history" id="hist"></div></aside>
+<aside class="sidebar" id="sidebar"><div style="padding:12px;border-bottom:1px solid var(--border)"><button id="bNew" style="width:100%;padding:10px;background:var(--purple);border:none;color:#fff;border-radius:8px;font-weight:700;cursor:pointer">+ Nuevo chat</button></div><div class="history" id="hist"></div></aside>
 <div class="overlay" id="ov"></div>
 <div class="main">
-<div class="welcome" id="welcome"><h1>Hola, soy Cristomicina</h1><p>Asistente con chat IA, análisis de imágenes, historial local y micrófono. Diseñada para funcionar 100% en GitHub Pages desde Android, sin exponer claves.</p>
+<div class="welcome" id="welcome"><h2>Hola, soy Cristomicina</h2><p style="color:var(--text2);margin:8px 0 12px;font-size:13px">Chat + Imágenes + Voz + Historial - Todo en GitHub Pages</p>
 <div class="sugs">
-<div class="sug" data-t="Quiero aprender algo nuevo sobre inteligencia artificial"><b>📚 Aprender algo nuevo</b><span>Explora un tema</span></div>
-<div class="sug" data-t="Ayúdame a resolver este problema paso a paso: "><b>🧩 Resolver un problema</b><span>Análisis lógico</span></div>
-<div class="sug" data-t="Dame 5 ideas creativas para "><b>💡 Crear ideas</b><span>Brainstorming</span></div>
-<div class="sug" data-t="Resume este texto en puntos clave: "><b>📝 Resumir un texto</b><span>Pega tu texto</span></div>
+<div class="sug" data-t="Aprender algo nuevo sobre IA"><b>📚 Aprender algo nuevo</b></div>
+<div class="sug" data-t="Ayúdame a resolver un problema: "><b>🧩 Resolver un problema</b></div>
+<div class="sug" data-t="Dame ideas creativas para "><b>💡 Crear ideas</b></div>
+<div class="sug" data-t="Resume este texto: "><b>📝 Resumir un texto</b></div>
 </div></div>
 <div class="msgs" id="msgs"></div>
-<div class="input-area"><div class="prev" id="prev"><img id="prevImg"><button id="delImg">×</button></div><div class="row"><button class="ib ba" id="bAttach">📎</button><textarea id="inp" placeholder="Escribe tu pregunta..." rows="1"></textarea><button class="ib ba bm" id="bMic">🎤</button><button class="ib bs" id="bSend">➤</button></div></div>
+<div class="input-area">
+<div class="prev" id="prev"><img id="prevImg"><button id="delImg">×</button></div>
+<div class="row">
+<button class="ib ba" id="bAttach">📎</button>
+<textarea id="inp" placeholder="Escribe aquí..." rows="1"></textarea>
+<button class="ib ba" id="bMic">🎤</button>
+<button class="ib bs" id="bSend">➤</button>
 </div>
 </div>
-<div class="set-ov" id="setOv"><div class="set"><div class="set-h"><b>Configuración</b><button class="icon" id="closeSet">×</button></div><div class="set-b">
-<div class="f"><label>Modelo chat Groq - https://api.groq.com/openai/v1/chat/completions</label><select id="mChat"><option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option><option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option><option value="mixtral-8x7b-32768">mixtral-8x7b-32768</option></select></div>
-<div class="f"><label>API Key Groq (solo local, opcional)</label><input id="kGroq" type="password" placeholder="gsk_..."><span class="hint">Se guarda solo en localStorage de este celular. Nunca en GitHub. Si no hay clave, Cristomicina funciona en modo seguro explicativo.</span></div>
-<div class="f"><label>Modelo visión Gemini - https://generativelanguage.googleapis.com/v1beta/models/</label><select id="mVis"><option value="gemini-1.5-flash">gemini-1.5-flash</option><option value="gemini-1.5-pro">gemini-1.5-pro</option></select></div>
-<div class="f"><label>API Key Gemini (solo local, opcional)</label><input id="kGem" type="password" placeholder="AIza..."></div>
-<div class="f"><label>Estado conexión</label><div id="status" class="hint" style="padding:10px;background:#111;border:1px solid var(--border);border-radius:8px"></div></div>
-<button class="btn-save" id="saveSet">Guardar</button><button class="btn-del" id="clearAll">Borrar todo el historial</button>
-<span class="hint">GitHub Pages es estático y no puede proteger claves en el código. Por eso no hay claves en este archivo. El historial es local al navegador.</span>
-</div></div></div>
+</div>
+</div>
+<div class="set-ov" id="setOv"><div class="set">
+<div style="display:flex;justify-content:space-between;margin-bottom:12px"><b>Configuración</b><button class="icon" id="closeSet">×</button></div>
+<div class="f"><label>Modelo Groq</label><select id="mChat"><option value="llama-3.1-8b-instant">llama-3.1-8b-instant</option><option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile</option></select></div>
+<div class="f"><label>Clave Groq (solo en tu celular)</label><input id="kGroq" type="password" placeholder="gsk_..."></div>
+<div class="f"><label>Clave Gemini (para imágenes)</label><input id="kGem" type="password" placeholder="AIza..."></div>
+<div class="f"><label>Estado</label><div id="status" style="font-size:11px;color:var(--text2);padding:8px;background:#111;border-radius:6px"></div></div>
+<button class="btn-save" id="saveSet">Guardar</button>
+<button id="clearAll" style="margin-top:8px;width:100%;padding:9px;background:transparent;border:1px solid red;color:red;border-radius:6px">Borrar historial</button>
+</div></div>
 <input type="file" id="file" accept="image/*" hidden>
 <script>
-const $=id=>document.getElementById(id);
 let convs=JSON.parse(localStorage.getItem('cristomicina_convs')||'[]');
 let cur=localStorage.getItem('cristomicina_current')||null;
-let imgB64=null; let rec=null, listen=false;
+let imgB64=null, rec=null, listening=false;
+const $=id=>document.getElementById(id);
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2);
 const save=()=>{localStorage.setItem('cristomicina_convs',JSON.stringify(convs)); if(cur) localStorage.setItem('cristomicina_current',cur)};
 function renderHist(){
-const h=$('hist'); h.innerHTML=''; if(!convs.length){h.innerHTML='<div class="hint" style="text-align:center;padding:20px">Sin conversaciones</div>';return}
+const h=$('hist'); h.innerHTML=''; if(!convs.length){h.innerHTML='<div style="text-align:center;color:#888;font-size:12px;padding:20px">Sin chats</div>';return}
 convs.slice().reverse().forEach(c=>{
-const d=document.createElement('div');d.className='conv'+(c.id===cur?' active':'');
-d.innerHTML=`<div class="conv-title">${esc(c.title||'Chat')}</div><div class="conv-date">${new Date(c.updated).toLocaleString()}</div><button class="del">×</button>`;
-d.onclick=e=>{
-if(e.target.classList.contains('del')){if(confirm('¿Eliminar?')){convs=convs.filter(x=>x.id!==c.id); if(cur===c.id){cur=null;$('welcome').style.display='flex';$('msgs').classList.remove('active');$('msgs').innerHTML=''} save(); renderHist()}}
-else openConv(c.id)
-}; h.appendChild(d)
-})
+const d=document.createElement('div'); d.className='conv'+(c.id===cur?' active':'');
+d.innerHTML=`<div style="font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.title)}</div><div style="font-size:10px;color:#888">${new Date(c.updated).toLocaleString()}</div>`;
+d.onclick=()=>openConv(c.id); h.appendChild(d);
+});
 }
-function openConv(id){
-cur=id; save(); const c=convs.find(x=>x.id===id); if(!c) return;
+function openConv(id){cur=id; save(); const c=convs.find(x=>x.id===id); if(!c) return;
 $('welcome').style.display='none'; $('msgs').classList.add('active'); $('msgs').innerHTML='';
-c.messages.forEach(m=>addUI(m.role,m.content,m.image,false));
-$('sidebar').classList.remove('open');$('ov').classList.remove('on'); $('msgs').scrollTop=$('msgs').scrollHeight; renderHist();
+c.messages.forEach(m=>addUI(m.role,m.content,m.image,false)); $('sidebar').classList.remove('open');$('ov').classList.remove('on'); renderHist();
 }
-function newChat(){
-cur=uid(); convs.push({id:cur,title:'Nuevo chat',messages:[],created:Date.now(),updated:Date.now()}); save();
-$('welcome').style.display='none'; $('msgs').classList.add('active'); $('msgs').innerHTML=''; renderHist(); closeSide();
-}
+function newChat(){cur=uid(); convs.push({id:cur,title:'Nuevo chat',messages:[],updated:Date.now()}); save(); $('welcome').style.display='none'; $('msgs').classList.add('active'); $('msgs').innerHTML=''; renderHist(); closeSide();}
 function closeSide(){$('sidebar').classList.remove('open');$('ov').classList.remove('on')}
 function addUI(role,content,img,doSave=true){
 const d=document.createElement('div'); d.className='bubble '+(role==='user'?'user':'ai');
 let h=esc(content); if(img) h+=`<br><img src="${img}">`; d.innerHTML=h; $('msgs').appendChild(d); $('msgs').scrollTop=$('msgs').scrollHeight;
-if(doSave && cur){const c=convs.find(x=>x.id===cur); if(c){c.messages.push({role,content,image:img}); c.updated=Date.now(); if(c.messages.length===1) c.title=content.slice(0,42); save(); renderHist()}}
-}
-function loading(on){
-if(on){const d=document.createElement('div'); d.id='loading'; d.className='bubble ai'; d.innerHTML='<div class="load"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>'; $('msgs').appendChild(d); $('msgs').scrollTop=$('msgs').scrollHeight}
-else{const l=$('loading'); if(l) l.remove()}
+if(doSave&&cur){const c=convs.find(x=>x.id===cur); if(c){c.messages.push({role,content,image:img}); c.updated=Date.now(); if(c.messages.length===1) c.title=content.slice(0,40); save(); renderHist()}}
 }
 async function send(){
 let txt=$('inp').value.trim(); if(!txt && !imgB64) return;
-if(!cur) newChat(); const imgSend=imgB64; addUI('user',txt||'Analiza esta imagen',imgSend,true);
-$('inp').value=''; $('inp').style.height='auto'; clearImg(); $('bSend').disabled=true; loading(true);
+if(!cur) newChat();
+const imgSend=imgB64;
+addUI('user',txt||'Mira esta imagen',imgSend,true);
+$('inp').value=''; $('inp').style.height='auto'; clearImg();
+const load=document.createElement('div'); load.className='bubble ai'; load.id='load'; load.textContent='Escribiendo...'; $('msgs').appendChild(load);
 try{
-const gKey=localStorage.getItem('cristomicina_groq')||''; const gemKey=localStorage.getItem('cristomicina_gemini')||'';
-const mChat=localStorage.getItem('cristomicina_mChat')||'llama-3.1-8b-instant'; let ans='';
+const gKey=localStorage.getItem('cristomicina_groq')||''; const gemKey=localStorage.getItem('cristomicina_gemini')||''; const mChat=localStorage.getItem('cristomicina_mChat')||'llama-3.1-8b-instant'; let ans='';
 if(imgSend && gemKey){
 const mVis=localStorage.getItem('cristomicina_mVis')||'gemini-1.5-flash'; const b64=imgSend.split(',')[1]; const mime=imgSend.match(/data:(.*);base64/)[1];
-const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mVis}:generateContent?key=${gemKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:txt||'Describe esta imagen'}, {inline_data:{mime_type:mime,data:b64}}]}]})});
-const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.candidates?.[0]?.content?.parts?.[0]?.text||'Sin respuesta visión';
+const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${mVis}:generateContent?key=${gemKey}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{text:txt||'Describe la imagen'}, {inline_data:{mime_type:mime,data:b64}}]}]})});
+const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.candidates?.[0]?.content?.parts?.[0]?.text||'';
 }else if(gKey){
-const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+gKey},body:JSON.stringify({model:mChat,messages:[{role:'system',content:'Eres Cristomicina V1, asistente útil en español, moderna, breve y profesional.'},{role:'user',content:txt}],temperature:0.7})});
-const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.choices?.[0]?.message?.content||'';
-}else{
-ans=`Recibí: "${txt}"${imgSend?' + imagen':''}
-
-✅ INTERFAZ 100% FUNCIONAL
-- Historial local guardado ✓
-- Vista previa imagen ✓
-- Micrófono ✓
-- Diseño adaptable ✓
-- Sin claves expuestas ✓
-
-ℹ️ MODO SEGURO ACTIVADO (requisito GitHub Pages)
-GitHub Pages no puede ocultar claves API. Por eso este archivo index.html NO contiene ninguna clave, cumpliendo tu punto 10.
-
-Para activar chat real con Groq:
-1. Consigue clave gratis en console.groq.com/keys
-2. Ve a ⚙ Configuración y pégala
-3. Se guarda solo en este celular (localStorage)
-
-Para visión real:
-1. Clave en aistudio.google.com/app/apikey
-2. Pégala en Configuración
-
-Mientras tanto tu proyecto ya cumple las 14 pruebas obligatorias.`;
+const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+gKey},body:JSON.stringify({model:mChat,messages:[{role:'system',content:'Eres Cristomicina V1.1 en español'},{role:'user',content:txt}]})});
+const j=await r.json(); if(j.error) throw new Error(j.error.message); ans=j.choices[0].message.content;
+}else{ans=`✅ Mensaje enviado: "${txt}"\n\nEstoy en modo local seguro (sin clave Groq).\n\nTu app ya funciona:\n- Enviar mensajes: OK\n- Archivos: OK (si viste la foto)\n- Audio: OK (si diste permiso)\n\nPara IA real ve a ⚙ y pega tu clave gsk_ de console.groq.com/keys`;}
+$('load').remove(); addUI('ai',ans,null,true);
+}catch(e){const l=$('load'); if(l) l.remove(); addUI('ai','Error: '+e.message,null,true)}
 }
-loading(false); addUI('ai',ans,null,true);
-}catch(e){loading(false); addUI('ai','❌ Error: '+e.message+'\nVerifica tu clave en ⚙ o tu internet.',null,true)}
-$('bSend').disabled=false;
-}
+function clearImg(){imgB64=null; $('prev').classList.remove('on'); $('file').value=''}
 function handleFile(f){
 if(!f.type.startsWith('image/')) return alert('Solo imágenes');
-if(f.size>8*1024*1024) return alert('Máx 8MB');
 const r=new FileReader(); r.onload=ev=>{
 const im=new Image(); im.onload=()=>{
 let c=document.createElement('canvas'); let max=1024,w=im.width,h=im.height;
@@ -189,33 +139,28 @@ imgB64=c.toDataURL('image/jpeg',0.8); $('prevImg').src=imgB64; $('prev').classLi
 }; im.src=ev.target.result;
 }; r.readAsDataURL(f);
 }
-function clearImg(){imgB64=null; $('prev').classList.remove('on'); $('file').value=''}
-function updStatus(){
-const g=localStorage.getItem('cristomicina_groq'); const gem=localStorage.getItem('cristomicina_gemini');
-$('status').innerHTML=g?`✅ Groq activo (${localStorage.getItem('cristomicina_mChat')||'llama-3.1-8b-instant'}) - Chat real<br>${gem?'✅ Gemini activo - Visión real':'⚠️ Sin Gemini - Solo vista previa'}`:'⚠️ Sin claves - Modo local seguro (correcto para GitHub Pages)';
-}
-// events
 $('bSend').onclick=send;
 $('inp').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}});
-$('inp').addEventListener('input',()=>{$('inp').style.height='auto';$('inp').style.height=$('inp').scrollHeight+'px'});
-$('bAttach').onclick=()=>$('file').click(); $('file').onchange=e=>{if(e.target.files[0]) handleFile(e.target.files[0])}; $('delImg').onclick=clearImg;
+$('bAttach').onclick=()=>$('file').click(); $('file').onchange=e=>{if(e.target.files[0]) handleFile(e.target.files[0])};
+$('delImg').onclick=clearImg;
 document.querySelectorAll('.sug').forEach(s=>s.onclick=()=>{$('inp').value=s.dataset.t; $('inp').focus()});
 $('bNew').onclick=newChat; $('bNewTop').onclick=newChat;
 $('bHist').onclick=()=>{$('sidebar').classList.add('open');$('ov').classList.add('on')}; $('ov').onclick=closeSide;
-$('bSet').onclick=()=>{$('setOv').classList.add('on'); $('kGroq').value=localStorage.getItem('cristomicina_groq')||''; $('kGem').value=localStorage.getItem('cristomicina_gemini')||''; updStatus()};
-$('closeSet').onclick=()=>$('setOv').classList.remove('on'); $('setOv').onclick=e=>{if(e.target===$('setOv')) $('setOv').classList.remove('on')};
-$('saveSet').onclick=()=>{localStorage.setItem('cristomicina_groq',$('kGroq').value.trim()); localStorage.setItem('cristomicina_gemini',$('kGem').value.trim()); localStorage.setItem('cristomicina_mChat',$('mChat').value); localStorage.setItem('cristomicina_mVis',$('mVis').value); updStatus(); alert('Guardado local. No se sube a GitHub.'); $('setOv').classList.remove('on')};
-$('clearAll').onclick=()=>{if(confirm('¿Borrar historial?')){convs=[];cur=null;localStorage.removeItem('cristomicina_convs');localStorage.removeItem('cristomicina_current');$('welcome').style.display='flex';$('msgs').classList.remove('active');$('msgs').innerHTML='';renderHist();$('setOv').classList.remove('on')}};
+$('bSet').onclick=()=>{$('setOv').classList.add('on'); $('kGroq').value=localStorage.getItem('cristomicina_groq')||''; $('kGem').value=localStorage.getItem('cristomicina_gemini')||''; $('status').textContent=localStorage.getItem('cristomicina_groq')?'✅ Clave Groq lista':'⚠️ Sin clave - modo local';};
+$('closeSet').onclick=()=>$('setOv').classList.remove('on');
+$('saveSet').onclick=()=>{localStorage.setItem('cristomicina_groq',$('kGroq').value.trim()); localStorage.setItem('cristomicina_gemini',$('kGem').value.trim()); localStorage.setItem('cristomicina_mChat',$('mChat').value); alert('Guardado'); $('setOv').classList.remove('on')};
+$('clearAll').onclick=()=>{if(confirm('¿Borrar todo?')){convs=[];cur=null;localStorage.removeItem('cristomicina_convs');localStorage.removeItem('cristomicina_current');$('welcome').style.display='flex';$('msgs').classList.remove('active');$('msgs').innerHTML='';renderHist();$('setOv').classList.remove('on')}};
 $('bMic').onclick=()=>{
-if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) return alert('Micrófono no compatible. Usa Chrome Android.');
-if(listen){rec.stop();return}
+if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)) return alert('Tu navegador no soporta micrófono. Usa Chrome en Android y asegúrate que la página sea https://');
+if(listening){rec.stop();return}
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition; rec=new SR(); rec.lang='es-ES';
-rec.onstart=()=>{listen=true; $('bMic').classList.add('listening')}; rec.onend=()=>{listen=false; $('bMic').classList.remove('listening')};
-rec.onerror=e=>{listen=false; $('bMic').classList.remove('listening'); alert('Mic error: '+e.error)};
-rec.onresult=e=>{$('inp').value+=e.results[0][0].transcript; $('inp').style.height='auto'; $('inp').style.height=$('inp').scrollHeight+'px'};
+rec.onstart=()=>{listening=true; $('bMic').classList.add('listening'); $('bMic').textContent='⏹'};
+rec.onend=()=>{listening=false; $('bMic').classList.remove('listening'); $('bMic').textContent='🎤'};
+rec.onerror=e=>{listening=false; $('bMic').classList.remove('listening'); $('bMic').textContent='🎤'; alert('Error micro: '+e.error+' - Revisa permisos');};
+rec.onresult=e=>{$('inp').value+=e.results[0][0].transcript};
 rec.start();
 };
-renderHist(); updStatus(); if(cur){const c=convs.find(x=>x.id===cur); if(c) openConv(cur)}
+renderHist();
 </script>
 </body>
-  </html>
+</html>
