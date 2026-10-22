@@ -3,207 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050b08">
-<title>NOVA-IA</title>
+<title>NOVA-IA SEGURA</title>
 <style>
-:root {
-  --bg: #080d0b; --panel: #101713; --panel2: #17211b;
-  --green: #36e982; --text: #f1f5f2; --muted: #a1ada5; --border: #28352d;
-}
-*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,Arial,sans-serif;height:100dvh;overflow:hidden}
-button,input,textarea{font:inherit} button{cursor:pointer}
-#matrix{position:fixed;inset:0;width:100%;height:100%;opacity:.13;pointer-events:none;z-index:0}
-.app{position:relative;z-index:1;height:100dvh;display:flex;overflow:hidden}
-.sidebar{width:255px;flex-shrink:0;background:rgba(10,16,12,.97);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:16px;gap:12px}
-.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:21px;letter-spacing:1px;padding:8px 2px 18px}
-.logo{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--green);border-radius:12px;color:var(--green);box-shadow:0 0 15px #36e98222}
-button{color:var(--text);border:1px solid var(--border);background:var(--panel2);border-radius:10px;padding:10px 12px;transition:.15s}
-button:hover{border-color:var(--green)} button:active{transform:scale(.98)}
+:root{--bg:#080d0b;--panel:#101713;--panel2:#17211b;--green:#36e982;--text:#f1f5f2;--muted:#a1ada5;--border:#28352d}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;height:100dvh;overflow:hidden}
+button{cursor:pointer;color:var(--text);border:1px solid var(--border);background:var(--panel2);border-radius:10px;padding:10px 12px}
 .primary{background:var(--green);color:#041008;border-color:var(--green);font-weight:750}
-.primary:hover{background:#68f5a2}
-.section-label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:1px;margin-top:12px}
+#matrix{position:fixed;inset:0;opacity:.13;pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;height:100dvh;display:flex}
+.sidebar{width:255px;background:rgba(10,16,12,.97);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:16px;gap:12px}
+.brand{display:flex;gap:10px;font-weight:800;font-size:21px;padding:8px 2px 18px}
+.logo{width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--green);border-radius:12px;color:var(--green)}
 #history{overflow-y:auto;display:flex;flex-direction:column;gap:6px}
-.history-item{display:flex;align-items:center;gap:4px;text-align:left;min-width:0;background:transparent;border-color:transparent;padding:9px;flex:1}
-.history-item.active{background:var(--panel2);border-color:var(--border)}
-.history-title{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;font-size:13px}
-.delete-chat{padding:5px 8px}
-.sidebar-bottom{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.5}
-.main{min-width:0;flex:1;display:flex;flex-direction:column;height:100%}
-.topbar{min-height:62px;display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border);background:rgba(8,13,11,.85)}
-#menuBtn{display:none} .topbar-title{font-weight:700} .status{margin-left:auto;color:var(--green);font-size:12px}
-.chat{flex:1;overflow-y:auto;padding:28px 18px;scroll-behavior:smooth} .inner{max-width:790px;margin:0 auto}
-.welcome{min-height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:25px 0}
-.welcome-logo{font-size:43px;color:var(--green);text-shadow:0 0 25px #36e98244;margin-bottom:8px}
-.welcome h1{font-size:clamp(26px,5vw,38px);margin:0 0 12px} .welcome p{color:var(--muted);max-width:440px;line-height:1.6}
-.suggestions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px;width:100%;max-width:540px}
-.suggestion{text-align:left;padding:14px;line-height:1.4}
-.message{display:flex;gap:12px;margin:0 0 24px;align-items:flex-start}
-.avatar{width:34px;height:34px;flex-shrink:0;border-radius:11px;display:grid;place-items:center;background:var(--panel2);color:var(--green);font-weight:800}
+.main{flex:1;display:flex;flex-direction:column}
+.topbar{height:62px;display:flex;align-items:center;gap:12px;padding:12px 18px;border-bottom:1px solid var(--border)}
+.status{margin-left:auto;color:var(--green);font-size:12px}
+.chat{flex:1;overflow-y:auto;padding:28px 18px} .inner{max-width:790px;margin:0 auto}
+.message{display:flex;gap:12px;margin:0 0 24px} .avatar{width:34px;height:34px;border-radius:11px;display:grid;place-items:center;background:var(--panel2);color:var(--green);font-weight:800}
 .message.user .avatar{background:#24382b;color:#fff}
-.message-content{min-width:0;flex:1;padding-top:4px} .message-name{font-size:12px;color:var(--muted);margin-bottom:7px}
-.message-text{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.65}
-.message-text img{max-width:100%;max-height:260px;display:block;border-radius:10px;margin-top:10px}
-.composer-area{padding:10px 18px 16px;background:linear-gradient(transparent,rgba(8,13,11,.97) 20%)}
-.composer-wrap{max-width:790px;margin:0 auto} .attachments{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}
-.attachment{border:1px solid var(--border);padding:6px 9px;border-radius:8px;font-size:12px;color:var(--muted);display:flex;gap:8px;align-items:center}
-.attachment button{padding:0 4px;border:0;background:transparent} 
+.message-content{flex:1} .message-text{white-space:pre-wrap;line-height:1.65}
+.composer-area{padding:10px 18px 16px}
+.composer-wrap{max-width:790px;margin:0 auto}
 .composer{border:1px solid #35483b;background:rgba(16,23,19,.98);border-radius:17px;padding:10px}
-#messageInput{width:100%;resize:none;min-height:45px;max-height:150px;color:var(--text);background:transparent;border:0;outline:0;padding:9px 7px}
-.tools{display:flex;align-items:center;flex-wrap:wrap;gap:7px} .tool-btn{padding:8px 10px;font-size:13px} #sendBtn{margin-left:auto;min-width:75px}
-.hint{text-align:center;color:var(--muted);font-size:11px;margin-top:9px} #fileInput{display:none}
-#notice{font-size:12px;color:var(--green);min-height:17px;margin:4px 0}
-@media(max-width:650px){.sidebar{position:fixed;z-index:5;top:0;bottom:0;left:0;transform:translateX(-105%);transition:transform .2s;box-shadow:15px 0 40px #0008}.sidebar.open{transform:translateX(0)}#menuBtn{display:inline-block}.topbar{padding:10px 12px}.chat{padding:20px 13px}.composer-area{padding:8px 10px 12px}.suggestions{grid-template-columns:1fr}.tool-btn{padding:8px;font-size:12px}.message{gap:9px}}
+#messageInput{width:100%;resize:none;min-height:45px;color:var(--text);background:transparent;border:0;outline:0;padding:9px 7px}
+.tools{display:flex;gap:7px} #sendBtn{margin-left:auto;min-width:75px}
+#notice{font-size:12px;color:var(--green);min-height:17px}
+.key-box{margin-top:auto;padding:10px;border:1px dashed var(--border);border-radius:10px;font-size:12px}
 </style>
 </head>
 <body>
 <canvas id="matrix"></canvas>
 <div class="app">
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar">
 <div class="brand"><span class="logo">N</span> NOVA-IA</div>
 <button class="primary" id="newChatBtn">＋ Nuevo chat</button>
-<div class="section-label">Conversaciones</div>
 <div id="history"></div>
-<div class="sidebar-bottom">NOVA-IA · Versión web<br>Tus conversaciones se guardan en este navegador.</div>
+<div class="key-box">
+Tu key está segura en este celular.<br>
+<button id="changeKeyBtn" style="margin-top:8px;width:100%">🔑 Cambiar key</button>
+</div>
 </aside>
 <main class="main">
-<header class="topbar"><button id="menuBtn">☰</button><div class="topbar-title">NOVA-IA</div><div class="status">● Lista</div></header>
+<header class="topbar"><div>NOVA-IA SEGURA</div><div class="status">● Lista</div></header>
 <section class="chat" id="chat"><div class="inner" id="messages"></div></section>
-<div class="composer-area"><div class="composer-wrap"><div id="notice"></div><div class="attachments" id="attachments"></div><div class="composer"><textarea id="messageInput" rows="1" placeholder="Escribe un mensaje a NOVA-IA..."></textarea><div class="tools"><button class="tool-btn" id="fileBtn">＋ Archivo</button><input id="fileInput" type="file" multiple accept="image/*,.txt,.md,.csv,.json,.html,.css,.js,.xml,.log"><button class="tool-btn" id="dictateBtn">🎙 Dictar</button><button class="tool-btn" id="readBtn">🔊 Leer</button><button class="primary" id="sendBtn">Enviar ↑</button></div></div><div class="hint">Enter para enviar · Shift + Enter para nueva línea</div></div></div>
+<div class="composer-area"><div class="composer-wrap"><div id="notice"></div><div class="composer"><textarea id="messageInput" placeholder="Escribe..."></textarea><div class="tools"><button class="primary" id="sendBtn">Enviar ↑</button></div></div></div></div>
 </main>
 </div>
 <script>
 (() => {
-  "use strict";
   const $ = id => document.getElementById(id);
-  const STORAGE_KEY = "nova_ia_chats_v1";
-  const ui = { sidebar:$("sidebar"), history:$("history"), messages:$("messages"), chat:$("chat"), input:$("messageInput"), send:$("sendBtn"), attachments:$("attachments"), fileInput:$("fileInput"), notice:$("notice") };
-  let chats=[]; let currentId=null; let pendingFiles=[]; let busy=false; let recognition=null;
+  const MODEL = "llama-3.1-8b-instant";
+  const ui = { history:$("history"), messages:$("messages"), chat:$("chat"), input:$("messageInput"), send:$("sendBtn"), notice:$("notice") };
+  let chats = JSON.parse(localStorage.getItem("nova_ia_chats_v1")||"[]");
+  let currentId = chats[0]?.id || null;
+  let busy=false;
 
+  function getKey(){
+    let k = localStorage.getItem("GROQ_KEY");
+    if(!k){
+      k = prompt("🔑 Pega tu key de Groq (empieza con gsk_):\nConsíguela en console.groq.com/keys");
+      if(k) localStorage.setItem("GROQ_KEY", k.trim());
+    }
+    return k;
+  }
+  
   // MATRIX
   const cvs=$("matrix"), ctx=cvs.getContext("2d");
-  function resizeMatrix(){cvs.width=innerWidth; cvs.height=innerHeight}
-  resizeMatrix(); window.addEventListener("resize",resizeMatrix);
-  const chars="NOVA01"; let drops=[];
-  function initDrops(){drops=Array(Math.floor(cvs.width/14)).fill(1)}
-  initDrops(); window.addEventListener("resize",initDrops);
-  setInterval(()=>{ctx.fillStyle="rgba(8,13,11,0.08)";ctx.fillRect(0,0,cvs.width,cvs.height);ctx.fillStyle="#36e982";ctx.font="14px monospace";drops.forEach((y,i)=>{const t=chars[Math.floor(Math.random()*chars.length)];ctx.fillText(t,i*14,y*14);if(y*14>cvs.height && Math.random()>0.975) drops[i]=0; drops[i]++})},50);
+  cvs.width=innerWidth; cvs.height=innerHeight;
+  let drops=Array(Math.floor(innerWidth/14)).fill(1);
+  setInterval(()=>{ctx.fillStyle="rgba(8,13,11,0.08)";ctx.fillRect(0,0,cvs.width,cvs.height);ctx.fillStyle="#36e982";ctx.font="14px monospace";drops.forEach((y,i)=>{ctx.fillText("NOVA"[Math.floor(Math.random()*4)],i*14,y*14); if(y*14>cvs.height && Math.random()>0.975) drops[i]=0; drops[i]++})},50);
 
-  function makeId(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
-  function notify(m){ui.notice.textContent=m||""}
-  function save(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(chats))}catch{notify("No se pudo guardar el historial.")}}
+  function save(){localStorage.setItem("nova_ia_chats_v1",JSON.stringify(chats))}
   function activeChat(){return chats.find(c=>c.id===currentId)}
-  function load(){try{const r=localStorage.getItem(STORAGE_KEY); if(r){chats=JSON.parse(r); currentId=chats[0]?.id||null}}catch{chats=[]} if(!chats.length) createChat(false)}
-  function createChat(render=true){const chat={id:makeId(),title:"Nuevo chat",messages:[]};chats.unshift(chat);currentId=chat.id;pendingFiles=[];save();if(render) renderAll();ui.input.focus();ui.sidebar.classList.remove("open")}
-  function renderHistory(){
-    ui.history.replaceChildren();
-    chats.forEach(chat=>{
-      const row=document.createElement("div"); row.style.display="flex"; row.style.gap="4px";
-      const open=document.createElement("button"); open.className="history-item"+(chat.id===currentId?" active":"");
-      open.innerHTML='<span class="history-title"></span>'; open.querySelector(".history-title").textContent=chat.title||"Nuevo chat";
-      open.addEventListener("click",()=>{currentId=chat.id; pendingFiles=[]; renderAll(); ui.sidebar.classList.remove("open")});
-      const del=document.createElement("button"); del.className="delete-chat"; del.textContent="×"; del.title="Eliminar";
-      del.addEventListener("click",()=>{chats=chats.filter(c=>c.id!==chat.id); if(currentId===chat.id) currentId=chats[0]?.id||null; if(!currentId) createChat(); else{save(); renderAll()}});
-      row.append(open,del); ui.history.append(row);
-    });
-  }
-  function renderMessages(){
-    ui.messages.replaceChildren(); const chat=activeChat();
-    if(!chat || !chat.messages.length){
-      const welcome=document.createElement("div"); welcome.className="welcome";
-      welcome.innerHTML=`<div class="welcome-logo">✳</div><h1>Hola, soy NOVA-IA</h1><p>Tu asistente web. Escribe un mensaje para comenzar. También puedes usar el dictado o adjuntar archivos.</p><div class="suggestions"><button class="suggestion" data-prompt="Explícame algo interesante sobre el universo">🌌 Aprende algo nuevo</button><button class="suggestion" data-prompt="Ayúdame a estudiar para un examen">📚 Ayuda para estudiar</button><button class="suggestion" data-prompt="Dame ideas para un proyecto creativo">💡 Ideas creativas</button><button class="suggestion" data-prompt="¿Qué puedes hacer en esta versión?">🤖 ¿Qué puedes hacer?</button></div>`;
-      welcome.querySelectorAll("[data-prompt]").forEach(b=>b.addEventListener("click",()=>{ui.input.value=b.dataset.prompt; sendMessage()}));
-      ui.messages.append(welcome); return;
-    }
-    chat.messages.forEach(message=>{
-      const item=document.createElement("article"); item.className="message "+(message.role==="user"?"user":"assistant");
-      const avatar=document.createElement("div"); avatar.className="avatar"; avatar.textContent=message.role==="user"?"Tú":"N";
-      const content=document.createElement("div"); content.className="message-content";
-      const name=document.createElement("div"); name.className="message-name"; name.textContent=message.role==="user"?"Tú":"NOVA-IA";
-      const text=document.createElement("div"); text.className="message-text"; text.textContent=String(message.text||"");
-      content.append(name,text);
-      if(message.imageData){const img=document.createElement("img"); img.src=message.imageData; img.alt=message.fileName||"Imagen"; content.append(img)}
-      else if(message.fileName){const fl=document.createElement("div"); fl.style.color="var(--muted)"; fl.style.fontSize="12px"; fl.style.marginTop="8px"; fl.textContent="Archivo: "+message.fileName; content.append(fl)}
-      item.append(avatar,content); ui.messages.append(item);
-    });
+  function createChat(){const chat={id:Date.now().toString(36),title:"Nuevo chat",messages:[]}; chats.unshift(chat); currentId=chat.id; save(); renderAll()}
+  if(!chats.length) createChat();
+
+  function renderAll(){
+    ui.history.innerHTML=""; chats.forEach(ch=>{const b=document.createElement("button"); b.textContent=ch.title; b.style.textAlign="left"; b.style.padding="9px"; b.style.background= ch.id===currentId ? "var(--panel2)" : "transparent"; b.onclick=()=>{currentId=ch.id; renderAll()}; ui.history.append(b)});
+    ui.messages.innerHTML=""; const chat=activeChat();
+    if(!chat.messages.length){ui.messages.innerHTML=`<div style="text-align:center;padding:60px 0"><div style="font-size:43px;color:var(--green)">✳</div><h1>Hola, soy NOVA-IA</h1><p style="color:var(--muted)">Versión segura. Tu key no se sube a GitHub.</p></div>`; return}
+    chat.messages.forEach(m=>{const d=document.createElement("div"); d.className="message "+m.role; d.innerHTML=`<div class="avatar">${m.role==="user"?"Tú":"N"}</div><div class="message-content"><div class="message-text">${m.text}</div></div>`; ui.messages.append(d)});
     ui.chat.scrollTop=ui.chat.scrollHeight;
   }
-  function renderAttachments(){
-    ui.attachments.replaceChildren();
-    pendingFiles.forEach((file,index)=>{
-      const item=document.createElement("div"); item.className="attachment";
-      const name=document.createElement("span"); name.textContent=file.name;
-      const remove=document.createElement("button"); remove.textContent="×"; remove.addEventListener("click",()=>{pendingFiles.splice(index,1); renderAttachments()});
-      item.append(name,remove); ui.attachments.append(item);
-    });
+
+  async function getRealAI(prompt){
+    const GROQ_KEY = getKey();
+    if(!GROQ_KEY) throw new Error("No pusiste la key");
+    const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+GROQ_KEY},body:JSON.stringify({model:MODEL,messages:[{role:'system',content:'Eres NOVA-IA, hablas español.'},{role:'user',content:prompt}]})});
+    const j=await r.json();
+    if(j.error) throw new Error(j.error.message);
+    return j.choices[0].message.content;
   }
-  function renderAll(){renderHistory(); renderMessages(); renderAttachments()}
-  function localReply(input, files){
-    const t=input.toLowerCase().trim();
-    if(/^(hola|holi|hey|buenas|buenos días|buenas tardes|buenas noches)[!. ]*$/.test(t)) return "¡Hola! 👋 Soy NOVA-IA. ¿En qué te puedo ayudar hoy?";
-    if(t.includes("qué puedes hacer")||t.includes("que puedes hacer")) return "En esta versión puedo mantener conversaciones básicas, guardar el historial, leer respuestas en voz alta, usar dictado si tu navegador lo admite y mostrar archivos adjuntos.";
-    if(t.includes("quién eres")||t.includes("quien eres")) return "Soy NOVA-IA, un asistente web creado con HTML, CSS y JavaScript. Esta versión funciona sin servidor propio.";
-    if(t.includes("gracias")) return "¡Con gusto! 😊 ¿En qué más te puedo ayudar?";
-    if(files.length){const names=files.map(f=>f.name).join(", "); const textFiles=files.filter(f=>f.textContent).map(f=>"\n\nContenido de "+f.name+":\n"+f.textContent.slice(0,3500)).join(""); if(textFiles) return "He leído los archivos: "+names+textFiles; return "Has adjuntado: "+names+". Puedo mostrar la imagen o el nombre."}
-    if(!input.trim()) return "Escribe una pregunta o mensaje para comenzar.";
-    return "He recibido tu mensaje: «"+input+"».\n\nLa interfaz de NOVA-IA ya responde, pero todavía no tiene conectado un modelo de IA avanzado. Si quieres, lo conectamos a Groq/Gemini.";
-  }
+
   async function sendMessage(){
     if(busy) return;
-    const input=ui.input.value.trim();
-    if(!input && !pendingFiles.length){notify("Escribe un mensaje o adjunta un archivo."); return}
-    if(!activeChat()) createChat(false);
-    const chat=activeChat(); const files=pendingFiles.slice();
-    const fileSummary=files.map(f=>({name:f.name,textContent:f.textContent||"",imageData:f.imageData||""}));
-    const userMessage={role:"user",text:input||"He adjuntado un archivo.",fileName:files.map(f=>f.name).join(", "),imageData:files.find(f=>f.imageData)?.imageData||""};
-    chat.messages.push(userMessage);
-    if(chat.messages.length===1) chat.title=(input||files[0]?.name||"Nuevo chat").slice(0,32);
-    ui.input.value=""; ui.input.style.height="45px"; pendingFiles=[]; busy=true; ui.send.disabled=true; ui.send.textContent="…"; notify("NOVA-IA está preparando respuesta…"); save(); renderAll();
-    await new Promise(r=>setTimeout(r,250));
-    try{const reply=localReply(input,fileSummary); chat.messages.push({role:"assistant",text:reply}); save(); renderAll(); notify("")}
-    catch{chat.messages.push({role:"assistant",text:"Error al preparar la respuesta."}); save(); renderAll()}
-    finally{busy=false; ui.send.disabled=false; ui.send.textContent="Enviar ↑"; ui.input.focus()}
-  }
-  $("newChatBtn").addEventListener("click",()=>createChat(true));
-  $("menuBtn").addEventListener("click",()=>ui.sidebar.classList.toggle("open"));
-  ui.send.addEventListener("click",sendMessage);
-  ui.input.addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); sendMessage()}});
-  ui.input.addEventListener("input",()=>{ui.input.style.height="45px"; ui.input.style.height=Math.min(ui.input.scrollHeight,150)+"px"});
-  $("fileBtn").addEventListener("click",()=>ui.fileInput.click());
-  ui.fileInput.addEventListener("change",async e=>{
-    const files=Array.from(e.target.files||[]);
-    for(const file of files){
-      if(file.size>2*1024*1024){notify(file.name+" supera 2 MB."); continue}
-      const item={name:file.name,textContent:"",imageData:""};
-      try{
-        if(file.type.startsWith("image/")){item.imageData=await new Promise((res,rej)=>{const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=rej; r.readAsDataURL(file)})}
-        else{const ok=/\.(txt|md|csv|json|html|css|js|xml|log)$/i.test(file.name); if(!ok){notify("Tipo no admitido: "+file.name); continue} item.textContent=await file.text()}
-        pendingFiles.push(item);
-      }catch{notify("No se pudo leer "+file.name)}
+    const input=ui.input.value.trim(); if(!input) return;
+    const chat=activeChat();
+    chat.messages.push({role:"user",text:input});
+    if(chat.messages.length===1) chat.title=input.slice(0,32);
+    ui.input.value=""; busy=true; ui.send.disabled=true; ui.send.textContent="..."; ui.notice.textContent="Pensando..."; save(); renderAll();
+    try{
+      const reply=await getRealAI(input);
+      chat.messages.push({role:"assistant",text:reply});
+    }catch(e){
+      chat.messages.push({role:"assistant",text:"Error: "+e.message+"\nSi dice key inválida, dale a Cambiar key"});
     }
-    renderAttachments(); ui.fileInput.value=""; if(pendingFiles.length) notify("Archivo listo. Pulsa Enviar.")
-  });
-  // --- ESTO ERA LO QUE ESTABA ROTO, YA ESTÁ ARREGLADO ---
-  $("dictateBtn").addEventListener("click",()=>{
-    const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-    if(!SR){notify("Tu navegador no admite dictado. Usa Chrome."); return}
-    if(recognition){recognition.stop(); recognition=null; notify("Dictado detenido."); $("dictateBtn").textContent="🎙 Dictar"; return}
-    recognition=new SR(); recognition.lang="es-ES"; recognition.interimResults=false;
-    recognition.onstart=()=>{notify("Escuchando... habla ahora"); $("dictateBtn").textContent="⏹ Detener"};
-    recognition.onresult=(ev)=>{ui.input.value+=(ui.input.value?" ":"")+ev.results[0][0].transcript; ui.input.dispatchEvent(new Event("input"))};
-    recognition.onerror=()=>{notify("Error de micrófono. Permite el acceso."); $("dictateBtn").textContent="🎙 Dictar"; recognition=null};
-    recognition.onend=()=>{notify(""); $("dictateBtn").textContent="🎙 Dictar"; recognition=null};
-    recognition.start();
-  });
-  $("readBtn").addEventListener("click",()=>{
-    const chat=activeChat(); if(!chat||!chat.messages.length){notify("No hay mensaje para leer."); return}
-    const last=chat.messages.filter(m=>m.role==="assistant").pop(); if(!last){notify("No hay respuesta de NOVA para leer."); return}
-    window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(last.text); u.lang="es-ES"; u.rate=1;
-    u.onstart=()=>notify("Leyendo..."); u.onend=()=>notify("");
-    window.speechSynthesis.speak(u);
-  });
+    busy=false; ui.send.disabled=false; ui.send.textContent="Enviar ↑"; ui.notice.textContent=""; save(); renderAll();
+  }
 
-  load(); renderAll();
+  $("newChatBtn").onclick=createChat;
+  $("changeKeyBtn").onclick=()=>{localStorage.removeItem("GROQ_KEY"); alert("Ahora vuelve a cargar la página y pega la nueva key"); location.reload();}
+  ui.send.onclick=sendMessage;
+  ui.input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); sendMessage()}};
+  renderAll();
+  getKey(); // pide la key al abrir si no existe
 })();
 </script>
 </body>
