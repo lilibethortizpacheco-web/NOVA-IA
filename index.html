@@ -3,79 +3,93 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVA-IA WhatsApp Style</title>
+<title>NOVA-IA MATRIX + WHATSAPP</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#111b21;font-family:system-ui,sans-serif;height:100dvh;overflow:hidden}
-.app{display:flex;height:100dvh}
-.sidebar{width:280px;background:#111b21;color:#e9edef;border-right:1px solid #222d34;display:flex;flex-direction:column;padding:14px;gap:10px;position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .25s ease;z-index:20}
+*{box-sizing:border-box}body{margin:0;background:#080d0b;color:#f1f5f2;font-family:system-ui;height:100dvh;overflow:hidden}
+#matrix{position:fixed;inset:0;opacity:.18;pointer-events:none;z-index:0}
+.app{position:relative;z-index:1;display:flex;height:100dvh}
+.sidebar{width:280px;background:rgba(10,16,12,.98);border-right:1px solid #28352d;display:flex;flex-direction:column;padding:14px;gap:10px;position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);transition:.25s;z-index:20}
 .sidebar.open{transform:translateX(0)}
-.main{flex:1;display:flex;flex-direction:column;background:#0b141a;background-image:url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');background-blend-mode:overlay;min-width:0}
-.topbar{height:59px;background:#202c33;color:#e9edef;display:flex;align-items:center;gap:12px;padding:0 16px}
-#toggleBtn{font-size:22px;background:transparent;border:0;color:#e9edef}
+.main{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{height:60px;background:rgba(16,23,19,.96);border-bottom:1px solid #28352d;color:#e9edef;display:flex;align-items:center;gap:12px;padding:0 16px}
+#toggleBtn{font-size:22px;background:transparent;border:1px solid #28352d;color:#e9edef;padding:6px 10px;border-radius:8px;cursor:pointer}
 .chat{flex:1;overflow-y:auto;padding:20px 8px}
-.inner{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:3px}
+.inner{max-width:780px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+/* ESTILO WHATSAPP PERO SOBRE MATRIX */
 .message{display:flex;width:100%}
 .message.user{justify-content:flex-end}
 .message.assistant{justify-content:flex-start}
-.bubble{max-width:75%;padding:8px 10px 5px 10px;border-radius:8px;font-size:14.8px;line-height:19px;position:relative;box-shadow:0 1px 0.5px rgba(0,0,0,.13);word-wrap:break-word}
-.message.user .bubble{background:#dcf8c6;color:#111b21;border-top-right-radius:0}
-.message.assistant .bubble{background:#202c33;color:#e9edef;border-top-left-radius:0}
-.time{font-size:11px;color:#667781;display:inline-block;margin-left:10px;margin-top:4px;float:right}
-.message.user .time{color:#53bdeb}
-.composer-area{background:#202c33;padding:8px 12px}
-.composer{max-width:720px;margin:0 auto;display:flex;gap:8px;align-items:flex-end}
-#messageInput{flex:1;background:#2a3942;color:#e9edef;border:0;border-radius:8px;padding:12px;resize:none;outline:0;min-height:42px}
-button.primary{background:#00a884;color:#fff;border:0;padding:10px 16px;border-radius:8px;font-weight:700;cursor:pointer}
-.newchat{background:#00a884;color:#fff;border:0;padding:10px;border-radius:8px;font-weight:700;width:100%}
+.bubble{max-width:78%;padding:8px 12px 6px;border-radius:12px;font-size:15px;line-height:20px;box-shadow:0 1px 2px rgba(0,0,0,.4);white-space:pre-wrap}
+.message.user .bubble{background:#dcf8c6;color:#111b21;border-top-right-radius:2px}
+.message.assistant .bubble{background:#101713;color:#e9edef;border:1px solid #28352d;border-top-left-radius:2px}
+.time{font-size:11px;color:#667781;float:right;margin-left:12px;margin-top:6px}
+.message.user .time{color:#075e54;font-weight:700}
+.composer-area{background:rgba(16,23,19,.96);border-top:1px solid #28352d;padding:10px 14px}
+.composer{max-width:780px;margin:0 auto;display:flex;gap:8px;align-items:flex-end}
+#messageInput{flex:1;background:#17211b;color:#e9edef;border:1px solid #35483b;border-radius:12px;padding:12px;resize:none;outline:0;min-height:45px}
+button.primary{background:#36e982;color:#041008;border:0;padding:11px 18px;border-radius:12px;font-weight:800;cursor:pointer}
+.newchat{background:#36e982;color:#041008;border:0;padding:10px;border-radius:10px;font-weight:800;width:100%;cursor:pointer}
 </style>
 </head>
 <body>
+<canvas id="matrix"></canvas>
 <div class="app">
 <aside class="sidebar" id="sidebar">
-<div style="font-weight:800;font-size:20px;padding:10px 0">NOVA-IA</div>
+<div style="font-weight:800;font-size:20px;padding:10px 0;color:#36e982">NOVA-IA</div>
 <button class="newchat" id="newChatBtn">＋ Nuevo chat</button>
 <div id="history" style="display:flex;flex-direction:column;gap:6px;margin-top:10px"></div>
-<button id="changeKeyBtn" style="margin-top:auto;background:transparent;border:1px solid #333;color:#aaa;padding:8px;border-radius:8px">🔑 Cambiar key</button>
+<button id="changeKeyBtn" style="margin-top:auto;background:transparent;border:1px solid #333;color:#aaa;padding:8px;border-radius:8px;cursor:pointer">🔑 Cambiar key</button>
 </aside>
 <main class="main">
-<div class="topbar">
-<button id="toggleBtn">☰</button>
-<div><b>NOVA-IA</b><br><span style="font-size:12px;color:#00a884">en línea</span></div>
-</div>
+<div class="topbar"><button id="toggleBtn">☰</button><div><b>NOVA-IA</b><br><span style="font-size:12px;color:#36e982">en línea • matrix</span></div></div>
 <div class="chat" id="chat"><div class="inner" id="messages"></div></div>
 <div class="composer-area"><div class="composer"><textarea id="messageInput" placeholder="Escribe un mensaje"></textarea><button class="primary" id="sendBtn">↑</button></div></div>
 </main>
 </div>
 <script>
 (() => {
-const $ = id=>document.getElementById(id);
-const MODEL = "llama-3.3-70b-versatile";
-const ui = {sidebar:$("sidebar"), history:$("history"), messages:$("messages"), chat:$("chat"), input:$("messageInput"), send:$("sendBtn")};
-let chats = JSON.parse(localStorage.getItem("nova_chats_wa")||"[]");
-let currentId = chats[0]?.id || null;
-function getKey(){let k=localStorage.getItem("GROQ_KEY"); if(!k){k=prompt("Pega tu key gsk_...:"); if(k) localStorage.setItem("GROQ_KEY",k.trim());} return k;}
-function save(){localStorage.setItem("nova_chats_wa",JSON.stringify(chats))}
+const $=id=>document.getElementById(id);
+// MODELOS QUE SI FUNCIONAN EN 2026 EN CUENTA GRATIS - EN ORDEN
+const MODELS=["llama-3.1-8b-instant","openai/gpt-oss-20b","openai/gpt-oss-120b","meta-llama/llama-4-scout-17b-16e-instruct"];
+const ui={sidebar:$("sidebar"),history:$("history"),messages:$("messages"),chat:$("chat"),input:$("messageInput"),send:$("sendBtn")};
+let chats=JSON.parse(localStorage.getItem("nova_matrix_wa_final")||"[]");
+let currentId=chats[0]?.id||null;
+
+function getKey(){let k=localStorage.getItem("GROQ_KEY"); if(!k){k=prompt("🔑 Pega tu NUEVA key gsk_...:"); if(k) localStorage.setItem("GROQ_KEY",k.trim());} return k;}
+
+// MATRIX FONDO
+const cvs=document.getElementById("matrix"),ctx=cvs.getContext("2d");
+function resize(){cvs.width=innerWidth;cvs.height=innerHeight} resize(); window.onresize=resize;
+let drops=Array(Math.floor(innerWidth/14)).fill(1);
+setInterval(()=>{ctx.fillStyle="rgba(8,13,11,0.08)";ctx.fillRect(0,0,cvs.width,cvs.height);ctx.fillStyle="#36e982";ctx.font="14px monospace";drops.forEach((y,i)=>{ctx.fillText("01"[Math.floor(Math.random()*2)],i*14,y*14); if(y*14>cvs.height && Math.random()>0.975) drops[i]=0; drops[i]++})},50);
+
+function save(){localStorage.setItem("nova_matrix_wa_final",JSON.stringify(chats))}
 function active(){return chats.find(c=>c.id===currentId)}
 function create(){const c={id:Date.now().toString(36),title:"Nuevo chat",messages:[]}; chats.unshift(c); currentId=c.id; save(); render();}
 if(!chats.length) create();
 function timeNow(){return new Date().toLocaleTimeString('es-CO',{hour:'numeric',minute:'2-digit'})}
 function render(){
- ui.history.innerHTML=""; chats.forEach(ch=>{const b=document.createElement("button"); b.textContent=ch.title; b.style.cssText="text-align:left;background:"+(ch.id===currentId?"#2a3942":"transparent")+";color:#e9edef;border:0;padding:8px;border-radius:6px"; b.onclick=()=>{currentId=ch.id; ui.sidebar.classList.remove("open"); render();}; ui.history.append(b)});
- ui.messages.innerHTML=""; const chat=active(); if(!chat.messages.length){ui.messages.innerHTML="<div style='text-align:center;color:#8696a0;padding:50px'>Hola, soy NOVA-IA.<br>Enviame un mensaje.</div>";return}
- chat.messages.forEach(m=>{const d=document.createElement("div"); d.className="message "+m.role; d.innerHTML=`<div class="bubble">${m.text}<span class="time">${timeNow()} ${m.role==='user'?'✓✓':''}</span></div>`; ui.messages.append(d)}); ui.chat.scrollTop=ui.chat.scrollHeight;
+ ui.history.innerHTML=""; chats.forEach(ch=>{const b=document.createElement("button"); b.textContent=ch.title; b.style.cssText="text-align:left;background:"+(ch.id===currentId?"#17211b":"transparent")+";color:#e9edef;border:1px solid #28352d;padding:8px;border-radius:6px;cursor:pointer"; b.onclick=()=>{currentId=ch.id; ui.sidebar.classList.remove("open"); render();}; ui.history.append(b)});
+ ui.messages.innerHTML=""; const chat=active(); if(!chat.messages.length){ui.messages.innerHTML="<div style='text-align:center;color:#a1ada5;padding:60px 20px'>Hola, soy NOVA-IA.<br>Fondo MATRIX • Mensajes tipo WhatsApp<br>Ya estoy sin errores.</div>";return}
+ chat.messages.forEach(m=>{const d=document.createElement("div"); d.className="message "+m.role; const safe=m.text.replace(/</g,"&lt;"); d.innerHTML=`<div class="bubble">${safe}<span class="time">${timeNow()} ${m.role==='user'?'✓✓':''}</span></div>`; ui.messages.append(d)}); ui.chat.scrollTop=ui.chat.scrollHeight;
 }
 async function ask(prompt){
- const KEY=getKey(); if(!KEY) throw new Error("Sin key");
- const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},body:JSON.stringify({model:MODEL,messages:[{role:'system',content:'Eres NOVA-IA, hablas español.'},{role:'user',content:prompt}]})});
- const j=await r.json(); if(j.error) throw new Error(j.error.message); return j.choices[0].message.content;
+ const KEY=getKey(); if(!KEY) throw new Error("No pegaste key");
+ let last="";
+ for(const model of MODELS){
+   try{
+     const r=await fetch('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KEY},body:JSON.stringify({model:model,messages:[{role:'system',content:'Eres NOVA-IA, respondes español corto útil.'},{role:'user',content:prompt}]})});
+     const j=await r.json(); if(j.error) throw new Error(j.error.message); console.log("FUNCIONÓ CON:",model); return j.choices[0].message.content;
+   }catch(e){ last=e.message; console.warn("Falló",model, e.message); continue; }
+ }
+ throw new Error(last);
 }
 async function send(){
- const txt=ui.input.value.trim(); if(!txt) return; const ch=active(); ch.messages.push({role:"user",text:txt}); if(ch.messages.length===1) ch.title=txt.slice(0,25); ui.input.value=""; ui.send.disabled=true; save(); render();
- try{const reply=await ask(txt); ch.messages.push({role:"assistant",text:reply});}catch(e){ch.messages.push({role:"assistant",text:"Error: "+e.message+" - revisa tu key"});}
- ui.send.disabled=false; save(); render();
+ const txt=ui.input.value.trim(); if(!txt) return; const ch=active(); ch.messages.push({role:"user",text:txt}); if(ch.messages.length===1) ch.title=txt.slice(0,25); ui.input.value=""; ui.send.disabled=true; ui.send.textContent="..."; save(); render();
+ try{const reply=await ask(txt); ch.messages.push({role:"assistant",text:reply});}catch(e){ch.messages.push({role:"assistant",text:"Error final: "+e.message+"\n\n1. Ve a console.groq.com/keys\n2. Borra la key vieja\n3. Crea una nueva\n4. Dale a 🔑 Cambiar key y pégala"});}
+ ui.send.disabled=false; ui.send.textContent="↑"; save(); render();
 }
-$("newChatBtn").onclick=create; $("changeKeyBtn").onclick=()=>{localStorage.removeItem("GROQ_KEY"); location.reload()}; $("toggleBtn").onclick=()=>ui.sidebar.classList.toggle("open"); ui.send.onclick=send; ui.input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); send()}}; render(); getKey();
+$("newChatBtn").onclick=create; $("changeKeyBtn").onclick=()=>{localStorage.removeItem("GROQ_KEY"); alert("Ahora pega tu key nueva"); location.reload()}; $("toggleBtn").onclick=()=>ui.sidebar.classList.toggle("open"); ui.send.onclick=send; ui.input.onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault(); send()}}; render(); getKey();
 })();
 </script>
 </body>
